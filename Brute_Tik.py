@@ -1,5 +1,3 @@
-#<<<Dev By : Abdullah Bawhab>>>
-
 import requests
 import json
 import random
@@ -22,8 +20,25 @@ def get_user_input(stdscr, prompt, y, x):
     curses.echo()
     stdscr.addstr(y, x, prompt)
     stdscr.refresh()
+
+    uly = y
+    ulx = x - 1
+    lry = y + 2
+    lrx = x + 61
+
+    # Log the coordinates and terminal size for debugging
+    max_y, max_x = stdscr.getmaxyx()
+    print(f"Rectangle coordinates: (uly: {uly}, ulx: {ulx}, lry: {lry}, lrx: {lrx})")
+    print(f"Terminal size: (max_y: {max_y}, max_x: {max_x})")
+
+    if lry >= max_y or lrx >= max_x:
+        stdscr.addstr(0, 0, "Error: Terminal window is too small for the specified coordinates")
+        stdscr.refresh()
+        stdscr.getch()
+        return ""
+
     input_field = curses.newwin(1, 60, y + 1, x)
-    textpad.rectangle(stdscr, y, x - 1, y + 2, x + 61)
+    textpad.rectangle(stdscr, uly, ulx, lry, lrx)
     stdscr.refresh()
     input_field.refresh()
     return input_field.getstr().decode('utf-8')
