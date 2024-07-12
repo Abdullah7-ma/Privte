@@ -1,4 +1,4 @@
- #!/usr/bin/python3
+#!/usr/bin/python3
 
 import Brute_Tik 
 import DDOS
@@ -61,7 +61,7 @@ def main(stdscr):
     stdscr.addstr(16, 0, "1. Bruteforce", curses.color_pair(1))
     stdscr.addstr(17, 0, "2. Generate Password", curses.color_pair(1))
     stdscr.addstr(18, 0, "3. DDOS Attack", curses.color_pair(1))
-    stdscr.addstr(19, 0, "0. Exit", curses.color_pair(1))
+    stdscr.addstr(19, 0, "4. Exit", curses.color_pair(1))
     stdscr.refresh()
 
     while True:
@@ -76,10 +76,10 @@ def main(stdscr):
             generator.main(stdscr)  # Call main function from generator module with stdscr argument
         elif choice == 3:
             DDOS.main(stdscr)  # Call main function from DDOS module with stdscr argument
-        elif choice == 0:
+        elif choice == 4:
             break
         else:
-            stdscr.addstr(21, 0, "Invalid choice. Please enter a valid option (0-3).", curses.color_pair(4))
+            stdscr.addstr(21, 0, "Invalid choice. Please enter a valid option (1-4).", curses.color_pair(4))
             stdscr.refresh()
             stdscr.getch()
             stdscr.move(21, 0)
